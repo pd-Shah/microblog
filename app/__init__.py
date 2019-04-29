@@ -4,6 +4,7 @@ from flask import (
     render_template,
 )
 from config import Config
+from app.packages import index
 
 
 def create_app():
@@ -16,19 +17,6 @@ def create_app():
     except Exception as e:
         print(e)
 
-    @app.route("/", methods=["GET", ])
-    def index():
-        user = {'username': 'pd'}
-        posts = [
-            {
-                'author': {'username': 'pd'},
-                'body': 'Hey there!'
-            },
-            {
-                'author': {'username': 'SOW'},
-                'body': 'HELLO!'
-            },
-        ]
-        return render_template("index.html", user=user, posts=posts)
+    app.register_blueprint(index.bp)
 
     return app
