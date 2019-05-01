@@ -5,7 +5,7 @@ from flask import (
 
 
 bp = Blueprint(
-    name="index",
+    name="blog",
     import_name=__name__,
     url_prefix="/index",
     template_folder="templates"
@@ -25,4 +25,4 @@ def show():
             'body': 'HELLO!'
         },
     ]
-    return render_template("index/index.html", user=user, posts=posts)
+    return render_template("blog/index.html", user=user, posts=posts)

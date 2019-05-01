@@ -2,12 +2,29 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <title></title>
   </head>
   <body>
     <ul>
-      <li> <a href="{{ url_for('index.show') }}"> Home </a></li>
+      <li> <a href="{{ url_for('blog.show') }}"> Home </a></li>
+      <li> <a href="{{ url_for('auth.login')}}"> SingIn </a> </li>
     </ul>
-    {% block content %} {% endblock %}
+    <div class="container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="message is-warning">
+          {% for message in messages %}
+            <div class="message-body">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %} {% endblock %}
+    </div>
   </body>
 </html>
