@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form class="" action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="field">
+      <p class="control">
+        {{ form.username.label(class="label") }}
+        {{ form.username(class="input", placeholder="username") }}
+        {% for error in form.username.errors %}
+          <div class="message is-danger">
+            <div class="message-body">
+              {{ error }}
+            </div>
+          </div>
+        {% endfor %}
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        {{ form.password.label(class="label") }}
+        {{ form.password(class="input", placeholder="password") }}
+        {% for error in form.password.errors %}
+          <div class="message is-danger">
+            <div class="message-body">
+              {{ error }}
+            </div>
+          </div>
+        {% endfor %}
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        {{ form.password_confirmation.label(class="label") }}
+        {{ form.password_confirmation(class="input", placeholder="password") }}
+        {% for error in form.password_confirmation.errors %}
+          <div class="message is-danger">
+            <div class="message-body">
+              {{ error }}
+            </div>
+          </div>
+        {% endfor %}
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        {{ form.email.label(class="label") }}
+        {{ form.email(class="input", placeholder="email") }}
+        {% for error in form.email.errors %}
+          <div class="message is-danger">
+            <div class="message-body">
+              {{ error }}
+            </div>
+          </div>
+        {% endfor %}
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        {{ form.submit(class="button is-primary") }}
+      </p>
+    </div>
+  </form>
+{% endblock %}

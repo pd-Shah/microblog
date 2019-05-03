@@ -9,8 +9,13 @@
   </head>
   <body>
     <ul>
-      <li> <a href="{{ url_for('blog.show') }}"> Home </a></li>
-      <li> <a href="{{ url_for('auth.login')}}"> SingIn </a> </li>
+      <li> <a href="{{ url_for('blog.index') }}"> Home </a></li>
+      {% if current_user.is_authenticated %}
+        <li> <a href="{{ url_for('auth.logout')}}"> SingOut </a> </li>
+      {% else %}
+        <li> <a href="{{ url_for('auth.register')}}"> Register </a> </li>
+        <li> <a href="{{ url_for('auth.login')}}"> SingIn </a> </li>
+      {% endif %}
     </ul>
     <div class="container">
       {% with messages = get_flashed_messages() %}

@@ -2,27 +2,24 @@ from flask import (
     Blueprint,
     render_template,
 )
+from flask_login import (
+    current_user,
+    login_required,
+)
+from app.packages.blog.models import Post
 
 
 bp = Blueprint(
     name="blog",
     import_name=__name__,
-    url_prefix="/index",
+    url_prefix="/blog",
     template_folder="templates"
 )
 
 
-@bp.route("/", methods=["GET"], )
-def show():
-    user = {'username': 'pd'}
-    posts = [
-        {
-            'author': {'username': 'pd'},
-            'body': 'Hey there!'
-        },
-        {
-            'author': {'username': 'SOW'},
-            'body': 'HELLO!'
-        },
-    ]
+@bp.route("/index", methods=["GET"], )
+@login_required
+def index():
+    user = current_user
+    posts = Post.query.all()
     return render_template("blog/index.html", user=user, posts=posts)

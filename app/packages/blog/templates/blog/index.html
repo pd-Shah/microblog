@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-  <h1>Hello <b>{{ user.username }}</b> </h1> 
-  {% for post in posts%}
-    <div class="">
-      {{ post.author.username }} <b>Says: </b> {{ post.body }}
-    </div>
-  {% endfor %}
+  {% if current_user.is_authenticated %}
+    <h1>Hello <b>{{ user.username }}</b> </h1>
+    {% for post in posts%}
+      <div class="">
+        {{ post.author.username }} <b>Says: </b> {{ post.body }}
+      </div>
+    {% endfor %}
+  {% else %}
+    <h1>Hello <b> Guest</b>. </h1> 
+  {% endif %}
 {% endblock %}
