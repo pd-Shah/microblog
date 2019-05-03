@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form class="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="field">
+      {{ form.header.label(class="label") }}
+      {{ form.header(class="input") }}
+      {% for error in form.header.errors %}
+      <div class="message is-danger">
+        <div class="message-body">
+          {{ error }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="field">
+      {{ form.body.label(class="label") }}
+      {{ form.body(class="input") }}
+      {% for error in form.body.errors %}
+      <div class="message is-danger">
+        <div class="message-body">
+          {{ error }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="field">
+        {{ form.submit(class="button is-primary") }}
+    </div>
+  </form>
+{% endblock %}

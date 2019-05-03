@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-250*250">
+          <img src="{{ user.avatar(250) }}" alt="Placeholder image">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4">{{ user.username }}</p>
+        <p class="subtitle is-6">{{ user.email }}</p>
+        <a href="{{ url_for('blog.add') }}" class="button is-primary">Add a Post</a>
+        <a href="{{ url_for('auth.update_profile', username=current_user.username) }}" class="button is-warning">Edit Profile</a>
+      </div>
+    </div>
+    <div class="content">
+      {{ user.about_me }}
+    </div>
+    <time><i>last seen: </i>{{ user.last_seen }}</time>
+  </div>
+</div>
+{% include("blog/post.html") %}
+{% endblock %}

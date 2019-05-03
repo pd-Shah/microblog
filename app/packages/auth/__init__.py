@@ -10,14 +10,19 @@ from flask_login import (
     current_user,
     login_user,
     logout_user,
+    login_required,
 )
 from app.packages.auth.forms import (
     LoginForm,
     RegisterationForm,
+    EditProfileForm
 )
 from app.packages.auth.logics import (
     load_user,
     add_user,
+    get_user,
+    set_lastseen,
+    update,
 )
 from app.packages.utiles import is_safe
 from app.packages.auth.models import User
@@ -36,23 +41,21 @@ def login():
         return redirect(url_for("blog.index"))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(
-            username = form.username.data
-            ).first()
+        user = get_user(form.username.data)
         if user is None or not user.check_password(form.password.data):
             flash("username and password mixing is invalid.")
             return redirect(url_for("auth.login"))
+        nxt = request.args.get("next")
+        if is_safe(nxt):
+            login_user(user=user, remember=form.remember_me.data)
+            set_lastseen()
+            flash(
+                "Welcome {}.".format(user.username)
+            )
+            return redirect(nxt)
         else:
-            nxt = request.args.get("next")
-            if is_safe(nxt):
-                login_user(user=user, remember=form.remember_me.data)
-                flash(
-                    "Welcome {}.".format(user.username)
-                )
-                return redirect(nxt)
-            else:
-                flash("smell malicious user.")
-                return redirect(url_for("auth.login"))
+            flash("smell malicious user.")
+            return redirect(url_for("auth.login"))
     return render_template(
         "auth/login.html",
         form=form,
@@ -71,8 +74,36 @@ def register():
     form = RegisterationForm()
     if form.validate_on_submit():
         add_user(form)
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("blog.index"))
     return render_template(
                 "auth/register.html",
                 form=form,
             )
+
+@bp.route("/profile/<string:username>")
+@login_required
+def profile(username, ):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = user.posts
+    return render_template("auth/profile.html",
+                            user=user,
+                            posts=posts,
+            )
+
+@bp.route("/profile/<string:username>/edit", methods=["POST", "GET", ])
+@login_required
+def update_profile(username, ):
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        update(form, )
+        return redirect(
+                url_for(
+                    "auth.profile",
+                    username=current_user.username,
+                    )
+                )
+    elif request.method == "GET":
+        user = User.query.filter_by(username=username).first_or_404()
+        form.username.data = user.username
+        form.about_me.data = user.about_me
+        return render_template("auth/edit_profile.html", form=form, user=user)

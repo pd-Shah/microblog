@@ -3,6 +3,7 @@ from wtforms import (
     StringField,
     PasswordField,
     SubmitField,
+    TextAreaField,
 )
 from wtforms.validators import (
     DataRequired,
@@ -33,6 +34,7 @@ class RegisterationForm(FlaskForm):
                 label="email",
                 validators=(DataRequired(), Email()),
             )
+    about_me = TextAreaField(label="about me")
     submit = SubmitField("Register")
 
     def validate_email(self, username, ):

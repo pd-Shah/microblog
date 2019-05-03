@@ -1,0 +1,30 @@
+  {% for post in posts %}
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        {{ post.header }}
+        <figure class="image is-64*64">
+          <img src="{{ post.author.avatar(64) }}" alt="Placeholder image">
+        </figure>
+      </p>
+      <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ post.body }}
+        <br>
+        <time>{{ post.timestamp }}</time>
+      </div>
+    </div>
+    {% if current_user.id==post.author.id %}
+    <footer class="card-footer">
+      <a href="{{ url_for('blog.edit', id=post.id) }}" class="card-footer-item">Edit</a>
+      <a href="{{ url_for('blog.delete', id=post.id) }}" class="card-footer-item">Delete</a>
+    </footer>
+    {% endif %}
+  </div>
+  {% endfor %}

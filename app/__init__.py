@@ -12,6 +12,7 @@ from app.init import (
 from app.packages import blog
 from app.packages import auth
 from app.packages.auth.models import User
+from app.packages.blog.models import Post
 
 
 def create_app():
@@ -22,9 +23,10 @@ def create_app():
     migrate.init_app(app, db, )
     login.init_app(app, )
     try:
-        makedirs(app.instance_path, )
+        makedirs(app.instance_path, exist_ok=True)
     except Exception as e:
         print(e)
     app.register_blueprint(blog.bp)
     app.register_blueprint(auth.bp)
+
     return app
