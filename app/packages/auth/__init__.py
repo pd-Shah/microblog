@@ -93,7 +93,7 @@ def profile(username, ):
 @bp.route("/profile/<string:username>/edit", methods=["POST", "GET", ])
 @login_required
 def update_profile(username, ):
-    form = EditProfileForm()
+    form = EditProfileForm(username, )
     if form.validate_on_submit():
         update(form, )
         return redirect(
@@ -102,8 +102,8 @@ def update_profile(username, ):
                     username=current_user.username,
                     )
                 )
-    elif request.method == "GET":
-        user = User.query.filter_by(username=username).first_or_404()
-        form.username.data = user.username
-        form.about_me.data = user.about_me
-        return render_template("auth/edit_profile.html", form=form, user=user)
+
+    user = User.query.filter_by(username=username).first_or_404()
+    form.username.data = user.username
+    form.about_me.data = user.about_me
+    return render_template("auth/edit_profile.html", form=form, user=user)

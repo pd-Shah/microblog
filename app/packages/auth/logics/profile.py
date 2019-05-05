@@ -7,9 +7,8 @@ def update(form, ):
     username = form.username.data
     about_me = form.about_me.data
     user = User.query.filter_by(username=username).first()
-    if current_user.id == user.id:
-        current_user.username = username
-        current_user.about_me = about_me
-        db.session.commit()
-        flash("profile updated successfully.")
+    current_user.username = username
+    current_user.about_me = about_me
+    db.session.commit()
+    flash("profile updated successfully.")
     return True

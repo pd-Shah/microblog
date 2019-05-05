@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="message is-danger">
+    <div class="message-header">
+      {% block error %}
+
+      {% endblock %}
+      <button class="delete"></button>
+    </div>
+    <div class="message-body">
+      Things break sometimes. What did you expect?
+      <br>
+      Maybe it's time to go <a href="{{ url_for('blog.index') }}">Home</a>.
+    </div>
+  </article>
+{% endblock %}

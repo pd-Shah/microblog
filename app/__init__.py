@@ -11,6 +11,7 @@ from app.init import (
 )
 from app.packages import blog
 from app.packages import auth
+from app.packages import error
 from app.packages.auth.models import User
 from app.packages.blog.models import Post
 
@@ -28,5 +29,5 @@ def create_app():
         print(e)
     app.register_blueprint(blog.bp)
     app.register_blueprint(auth.bp)
-
+    app.register_blueprint(error.bp)
     return app
