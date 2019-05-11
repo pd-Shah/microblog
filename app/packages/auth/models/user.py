@@ -11,6 +11,22 @@ from app.init import (
 from app.packages.blog.models import Post
 
 
+followers = db.Table(
+    "followers",
+    db.Column(
+        "follower",
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True,
+    ),
+    db.Column(
+        "followed",
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True,
+    ),
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True,)
     username = db.Column(db.String(128), unique=True,)
@@ -19,6 +35,14 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="author", lazy="dynamic")
     about_me = db.Column(db.String(256))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    followed = db.relationship(
+                    "User",
+                    secondary=followers,
+                    primaryjoin=id==followers.c.follower,
+                    secondaryjoin=id==followers.c.followed,
+                    backref=db.backref("followers", lazy="dynamic"),
+                    lazy="dynamic",
+                )
 
     def set_password(self, password):
         self.password = generate_password_hash(password, )
@@ -29,8 +53,40 @@ class User(UserMixin, db.Model):
     def avatar(self, size):
         email_hash = md5(self.email.lower().encode("utf-8")).hexdigest()
         url = "https://www.gravatar.com/avatar/{}?d=robohash&s={}".format(
-                email_hash, size)
+                    email_hash, size)
         return url
 
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        if self.followed.filter_by(id=user.id).first():
+            return True
+        return False
+
+    def is_followed(self, user):
+        if self.followers.filter_by(id=user.id).first():
+            return True
+        return False
+
+    def get_followed_posts(self, ):
+        query = Post.query.join(
+                    followers,
+                    (followers.c.followed==Post.user_id)
+                ).filter(followers.c.follower==self.id).order_by(
+                                                        Post.timestamp.desc()
+                                                        ).all()
+        return query
+
     def __repr__(self, ):
-        return "<User: {}>".format(self.username)
+        return '<%s.%s: %s, object at %s>' % (
+            self.__class__.__module__,
+            self.__class__.__name__,
+            self.username,
+            hex(id(self))
+        )

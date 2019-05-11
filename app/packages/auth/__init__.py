@@ -107,3 +107,18 @@ def update_profile(username, ):
     form.username.data = user.username
     form.about_me.data = user.about_me
     return render_template("auth/edit_profile.html", form=form, user=user)
+
+@bp.route("/follow/<string:username>")
+@login_required
+def follow(username, ):
+    user = get_user(username)
+    current_user.follow(user)
+    return redirect(url_for('auth.profile', username=username))
+
+
+@bp.route("/unfollow/<string:username>")
+@login_required
+def unfollow(username, ):
+    user = get_user(username)
+    current_user.unfollow(user)
+    return redirect(url_for("auth.profile", username=username))

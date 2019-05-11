@@ -12,8 +12,14 @@
       <div class="media-content">
         <p class="title is-4">{{ user.username }}</p>
         <p class="subtitle is-6">{{ user.email }}</p>
-        <a href="{{ url_for('blog.add') }}" class="button is-primary">Add a Post</a>
-        <a href="{{ url_for('auth.update_profile', username=current_user.username) }}" class="button is-warning">Edit Profile</a>
+        {% if current_user.id == user.id %}
+          <a href="{{ url_for('blog.add') }}" class="button is-primary">Add a Post</a>
+          <a href="{{ url_for('auth.update_profile', username=current_user.username) }}" class="button is-warning">Edit Profile</a>
+        {% elif current_user.is_following(user) %}
+          <a href="{{ url_for('auth.unfollow', username=user.username) }}" class="button is-primary">UnFollow</a>
+        {% else %}
+          <a href="{{ url_for('auth.follow', username=user.username) }}" class="button is-primary">Follow</a>
+        {% endif %}
       </div>
     </div>
     <div class="content">
