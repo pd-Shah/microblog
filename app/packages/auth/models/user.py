@@ -83,6 +83,16 @@ class User(UserMixin, db.Model):
                                                         ).all()
         return query
 
+    @staticmethod
+    def get_user_by_username(username, ):
+        user = User.query.filter_by(
+            username = username
+            ).first()
+        return user
+
+    def set_lastseen(self, ):
+        self.last_seen = datetime.utcnow()
+
     def __repr__(self, ):
         return '<%s.%s: %s, object at %s>' % (
             self.__class__.__module__,

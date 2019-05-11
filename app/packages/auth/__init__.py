@@ -23,6 +23,8 @@ from app.packages.auth.logics import (
     get_user,
     set_lastseen,
     update,
+    do_follow,
+    do_unfollow,
 )
 from app.packages.utiles import is_safe
 from app.packages.auth.models import User
@@ -111,14 +113,12 @@ def update_profile(username, ):
 @bp.route("/follow/<string:username>")
 @login_required
 def follow(username, ):
-    user = get_user(username)
-    current_user.follow(user)
+    do_follow(username)
     return redirect(url_for('auth.profile', username=username))
 
 
 @bp.route("/unfollow/<string:username>")
 @login_required
 def unfollow(username, ):
-    user = get_user(username)
-    current_user.unfollow(user)
+    do_unfollow(username)
     return redirect(url_for("auth.profile", username=username))

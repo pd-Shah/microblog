@@ -7,8 +7,7 @@ from app.init import db
 def add_post(form, ):
     header = form.header.data
     body = form.body.data
-    post = Post(header=header, body=body)
-    post.user_id = current_user.id
+    post = Post.add_post(current_user.id, header, body)
     db.session.add(post)
     db.session.commit()
     flash("post added sucessfully.")
@@ -17,16 +16,15 @@ def add_post(form, ):
 def update_post(id, form):
     header = form.header.data
     body = form.body.data
-    post = Post.query.get(id)
+    post = Post.get_post_by_id(id, )
     if current_user.id == post.author.id:
-        post.header = header
-        post.body = body
+        post.edit_post(header, body)
         db.session.commit()
         flash("post updated successfully")
     return True
 
 def delete_post(id, ):
-    post = Post.query.get(id)
+    post = Post.get_post_by_id(id, )
     if current_user.id == post.author.id:
         db.session.delete(post)
         db.session.commit()
@@ -34,5 +32,5 @@ def delete_post(id, ):
     return True
 
 def get_post(id, ):
-    post = Post.query.get(id)
+    post = Post.get_post_by_id(id, )
     return post
