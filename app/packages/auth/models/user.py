@@ -80,7 +80,7 @@ class User(UserMixin, db.Model):
                     (followers.c.followed==Post.user_id)
                 ).filter(followers.c.follower==self.id).order_by(
                                                         Post.timestamp.desc()
-                                                        ).all()
+                                                        )
         return query
 
     @staticmethod

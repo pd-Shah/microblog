@@ -25,6 +25,7 @@ from app.packages.auth.logics import (
     update,
     do_follow,
     do_unfollow,
+    followed_posts,
 )
 from app.packages.utiles import is_safe
 from app.packages.auth.models import User
@@ -87,9 +88,12 @@ def register():
 def profile(username, ):
     user = User.query.filter_by(username=username).first_or_404()
     posts = user.posts
+    page = request.args.get("page", 1, type=int)
+    f_posts = followed_posts(page)
     return render_template("auth/profile.html",
                             user=user,
                             posts=posts,
+                            paginate=f_posts,
             )
 
 @bp.route("/profile/<string:username>/edit", methods=["POST", "GET", ])

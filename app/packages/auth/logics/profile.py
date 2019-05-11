@@ -1,7 +1,12 @@
-from flask import flash
+from flask import (
+    flash,
+    current_app,
+)
 from flask_login import current_user
-from app.init import db
 from app.packages.auth.models import User
+from app.init import (
+    db,
+)
 
 def update(form, ):
     username = form.username.data
@@ -12,3 +17,11 @@ def update(form, ):
     db.session.commit()
     flash("profile updated successfully.")
     return True
+
+def followed_posts(page, ):
+    posts = current_user.get_followed_posts().paginate(
+                            page,
+                            current_app.config["POSTS_PER_PAGE"],
+                            True,
+                        )
+    return posts

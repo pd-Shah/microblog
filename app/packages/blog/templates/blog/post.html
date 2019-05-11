@@ -30,3 +30,47 @@
     {% endif %}
   </div>
   {% endfor %}
+
+  {% for post in paginate.items %}
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        {{ post.header }}
+        <figure class="image is-64*64">
+          <a href="{{ url_for('auth.profile', username=post.author.username) }}">
+            <img src="{{ post.author.avatar(64) }}" alt="Placeholder image">
+          </a>
+        </figure>
+      </p>
+      <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ post.body }}
+        <br>
+        <time>{{ post.timestamp }}</time>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="">
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <a href="{{ url_for('auth.profile', username=current_user.username, page=paginate.prev_num) }}" class="pagination-previous" {% if not paginate.has_prev %} disabled {% endif %}>Previous</a>
+      <a href="{{ url_for('auth.profile', username=current_user.username, page=paginate.next_num) }}" class="pagination-next" {% if not paginate.has_next %} disabled {% endif %}>Next page</a>
+      <ul class="pagination-list">
+        <li>
+          <a href="{{ url_for('auth.profile', username=current_user.username, page=paginate.prev_num) }}" class="pagination-link" aria-label="Goto page {{ paginate.pre_num }}">{{ paginate.prev_num }}</a>
+        </li>
+        <li>
+          <a class="pagination-link is-current" aria-label="Page {{ paginate.page }}" aria-current="page">{{ paginate.page }}</a>
+        </li>
+        <li>
+          <a  href="{{ url_for('auth.profile', username=current_user.username, page=paginate.next_num) }}" class="pagination-link" aria-label="Goto page {{ paginate.next_num }}">{{ paginate.next_num }}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>

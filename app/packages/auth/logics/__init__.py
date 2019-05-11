@@ -6,4 +6,7 @@ from .login import (
     do_unfollow,
 )
 from .register import add_user
-from .profile import update
+from .profile import (
+    update,
+    followed_posts,
+)
