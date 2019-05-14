@@ -31,6 +31,7 @@
   </div>
   {% endfor %}
 
+{% if paginate %}
   {% for post in paginate.items %}
   <div class="card">
     <header class="card-header">
@@ -74,3 +75,4 @@
       </ul>
     </nav>
   </div>
+{% endif %}
