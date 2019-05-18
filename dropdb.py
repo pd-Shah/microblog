@@ -9,7 +9,7 @@ with app.app_context():
     db.drop_all()
     db.create_all()
     db.session.commit()
-    user = User(username="pd", email="pd@gmail.com", about_me="I am a big programmer. blah blah...")
+    user = User(username="pd", email="pd.shahsafi@gmail.com", about_me="I am a big programmer. blah blah...")
     user.set_password("pd")
     db.session.add(user)
     db.session.commit()

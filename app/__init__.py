@@ -8,13 +8,14 @@ from app.init import (
     db,
     migrate,
     login,
+    mail,
 )
 from app.packages import blog
 from app.packages import auth
 from app.packages import error
+from app.packages import email
 from app.packages.auth.models import User
 from app.packages.blog.models import Post
-
 
 def create_app():
     app = Flask(import_name=__name__, instance_relative_config=True)
@@ -23,6 +24,7 @@ def create_app():
     db.init_app(app, )
     migrate.init_app(app, db, )
     login.init_app(app, )
+    mail.init_app(app, )
     try:
         makedirs(app.instance_path, exist_ok=True)
     except Exception as e:
@@ -30,4 +32,5 @@ def create_app():
     app.register_blueprint(blog.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(error.bp)
+    app.register_blueprint(email.bp)
     return app

@@ -90,6 +90,13 @@ class User(UserMixin, db.Model):
             ).first()
         return user
 
+    @staticmethod
+    def get_user_by_email(user_email, ):
+        user = User.query.filter_by(
+            email=user_email
+        ).first()
+        return user
+
     def set_lastseen(self, ):
         self.last_seen = datetime.utcnow()
 

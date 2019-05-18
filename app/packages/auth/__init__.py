@@ -15,7 +15,8 @@ from flask_login import (
 from app.packages.auth.forms import (
     LoginForm,
     RegisterationForm,
-    EditProfileForm
+    EditProfileForm,
+    ResetPasswordForm,
 )
 from app.packages.auth.logics import (
     load_user,
@@ -27,6 +28,7 @@ from app.packages.auth.logics import (
     do_unfollow,
     followed_posts,
 )
+from app.packages.email.logics import send_forget_password
 from app.packages.utiles import is_safe
 from app.packages.auth.models import User
 
@@ -126,3 +128,21 @@ def follow(username, ):
 def unfollow(username, ):
     do_unfollow(username)
     return redirect(url_for("auth.profile", username=username))
+
+
+@bp.route("/forget", methods=["POST", "GET"])
+def reset_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("blog.index"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        if not User.get_user_by_email(form.email.data):
+            flash("unregistred email address.")
+            return redirect(url_for("auth.reset_password"))
+        send_forget_password(form.email.data)
+        flash("check your email to continue")
+        return redirect(url_for("blog.index"))
+    return render_template(
+                "auth/forget_password.html",
+                form=form,
+            )
