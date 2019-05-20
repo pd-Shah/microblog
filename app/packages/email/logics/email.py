@@ -23,8 +23,10 @@ def send_forget_password(user_email, ):
     subject = "Forget Password"
     header = "Change Password Request"
     user = User.get_user_by_email(user_email)
+    token = user.build_jwt_token()
     body = render_template(
                 "email/forget_password.html",
                  user=user,
+                 token=token,
             )
     _send_mail(sender, recipients, subject, header, body)

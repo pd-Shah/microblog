@@ -10,3 +10,6 @@ from .profile import (
     update,
     followed_posts,
 )
+from .password import (
+    change_password,
+)

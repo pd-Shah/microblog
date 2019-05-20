@@ -6,13 +6,20 @@ from wtforms import (
 )
 from wtforms.validators import (
     DataRequired,
-    EqualTo,
     Email,
 )
 
-class ResetPasswordForm(FlaskForm):
+class ForgetPasswordForm(FlaskForm):
     email = StringField(
                 label="email",
                 validators=[DataRequired(), Email()],
             )
     submit = SubmitField(label="send mail")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(
+                    label="password",
+                    validators=[DataRequired(),],
+                )
+    submit = SubmitField(label="Reset My Password")

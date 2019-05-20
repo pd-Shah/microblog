@@ -16,6 +16,7 @@ from app.packages.auth.forms import (
     LoginForm,
     RegisterationForm,
     EditProfileForm,
+    ForgetPasswordForm,
     ResetPasswordForm,
 )
 from app.packages.auth.logics import (
@@ -27,6 +28,7 @@ from app.packages.auth.logics import (
     do_follow,
     do_unfollow,
     followed_posts,
+    change_password,
 )
 from app.packages.email.logics import send_forget_password
 from app.packages.utiles import is_safe
@@ -131,18 +133,33 @@ def unfollow(username, ):
 
 
 @bp.route("/forget", methods=["POST", "GET"])
-def reset_password():
+def forget_password():
     if current_user.is_authenticated:
         return redirect(url_for("blog.index"))
-    form = ResetPasswordForm()
+    form = ForgetPasswordForm()
     if form.validate_on_submit():
         if not User.get_user_by_email(form.email.data):
             flash("unregistred email address.")
-            return redirect(url_for("auth.reset_password"))
+            return redirect(url_for("auth.forget_password"))
         send_forget_password(form.email.data)
         flash("check your email to continue")
         return redirect(url_for("blog.index"))
     return render_template(
                 "auth/forget_password.html",
                 form=form,
+            )
+
+@bp.route("/reset-password/<string:token>", methods=["POST", "GET"])
+def reset_password(token, ):
+    if current_user.is_authenticated:
+        return redirect(url_for("blog.index"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        check = change_password(token, form.password.data)
+        if check is not None:
+            flash("password has changed")
+        return redirect(url_for("blog.index"))
+    return render_template(
+                "auth/reset_password.html",
+                form=form
             )

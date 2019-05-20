@@ -1,10 +1,18 @@
 from datetime import datetime
+from time import time
+from jwt import (
+    decode,
+    encode,
+)
 from hashlib import md5
 from werkzeug.security import (
     check_password_hash,
     generate_password_hash,
 )
-from flask_login import UserMixin
+from flask import current_app
+from flask_login import (
+    UserMixin,
+)
 from app.init import (
     db,
 )
@@ -99,6 +107,26 @@ class User(UserMixin, db.Model):
 
     def set_lastseen(self, ):
         self.last_seen = datetime.utcnow()
+
+    def build_jwt_token(self, exp=600, ):
+        payload = {
+                    "exp": time() + exp,
+                    "id": self.id,
+                }
+        key = current_app.config["SECRET_KEY"]
+        token = encode(payload=payload, key=key, algorithm='HS256')
+        token = token.decode("utf-8")
+        return token
+
+    @staticmethod
+    def get_user_by_token(token, ):
+        try:
+            key = current_app.config["SECRET_KEY"]
+            obj = decode(jwt=token, key=key, algorithms=["HS256", ])
+            id = obj.get("id")
+            return User.query.get(id)
+        except Exception as e:
+            return None
 
     def __repr__(self, ):
         return '<%s.%s: %s, object at %s>' % (
