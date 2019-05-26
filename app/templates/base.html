@@ -9,12 +9,12 @@
   </head>
   <body>
     <ul>
-      <li> <a href="{{ url_for('blog.index') }}"> Home </a></li>
+      <li> <a href="{{ url_for('blog.index') }}"> {{ gettext("Home") }} </a></li>
       {% if current_user.is_authenticated %}
-        <li> <a href="{{ url_for('auth.profile', username=current_user.username, ) }}"> Profile </a> </li>
-        <li> <a href="{{ url_for('auth.logout') }}"> SingOut </a> </li>
+        <li> <a href="{{ url_for('auth.profile', username=current_user.username, ) }}"> {{ gettext("Profile") }} </a> </li>
+        <li> <a href="{{ url_for('auth.logout') }}"> {{ gettext("SingOut") }} </a> </li>
       {% else %}
-        <li> <a href="{{ url_for('auth.register')}}"> Register </a> </li>
+        <li> <a href="{{ url_for('auth.register')}}"> {{ gettext("Register") }}  </a> </li>
       {% endif %}
     </ul>
     <div class="container">

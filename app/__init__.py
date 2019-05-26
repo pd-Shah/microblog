@@ -2,6 +2,7 @@ from os import makedirs
 from flask import (
     Flask,
     render_template,
+    request,
 )
 from settings import Config
 from app.init import (
@@ -9,6 +10,7 @@ from app.init import (
     migrate,
     login,
     mail,
+    babel,
 )
 from app.packages import blog
 from app.packages import auth
@@ -25,6 +27,7 @@ def create_app():
     migrate.init_app(app, db, )
     login.init_app(app, )
     mail.init_app(app, )
+    babel.init_app(app, )
     try:
         makedirs(app.instance_path, exist_ok=True)
     except Exception as e:
@@ -33,4 +36,5 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(error.bp)
     app.register_blueprint(email.bp)
+
     return app

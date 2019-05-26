@@ -10,3 +10,4 @@ class Config():
     MAIL_PASSWORD = environ.get("MAIL_PASSWORD")
     MAIL_USE_TLS = environ.get("MAIL_USE_TLS")
     MAIL_PORT =  environ.get("MAIL_PORT")
+    LANGUAGES = ['de', 'fa', 'en']
