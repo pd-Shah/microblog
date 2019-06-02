@@ -11,3 +11,4 @@ class Config():
     MAIL_USE_TLS = environ.get("MAIL_USE_TLS")
     MAIL_PORT =  environ.get("MAIL_PORT")
     LANGUAGES = ['de', 'fa', 'en']
+    REDIS_URL = environ.get("REDIS_URL", default="redis://")

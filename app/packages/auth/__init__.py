@@ -30,7 +30,7 @@ from app.packages.auth.logics import (
     followed_posts,
     change_password,
 )
-from app.packages.email.logics import send_forget_password
+from app.packages.email import send_forget_password
 from app.packages.utiles import is_safe
 from app.packages.auth.models import User
 

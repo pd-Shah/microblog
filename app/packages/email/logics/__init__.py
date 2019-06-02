@@ -1,1 +1,1 @@
-from .email import send_forget_password
+from .email import send_mail
