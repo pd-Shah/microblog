@@ -19,9 +19,9 @@ from app.packages import blog
 from app.packages import auth
 from app.packages import error
 from app.packages import email
+from app.packages import api
 from app.packages.auth.models import User
 from app.packages.blog.models import Post
-
 
 def create_app():
     app = Flask(import_name=__name__, instance_relative_config=True)
@@ -42,6 +42,7 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(error.bp)
     app.register_blueprint(email.bp)
+    app.register_blueprint(api.bp)
     app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq")
 
     return app

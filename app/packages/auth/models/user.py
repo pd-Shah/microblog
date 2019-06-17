@@ -94,7 +94,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def get_user_by_username(username, ):
         user = User.query.filter_by(
-            username = username
+            username=username
             ).first()
         return user
 
