@@ -4,7 +4,10 @@ from flask import (
 from flask_restful import (
     Api,
 )
-from .user import UserApi
+from .user import (
+    UserApi,
+    UserListApi,
+)
 
 bp = Blueprint(
         name="api",
@@ -12,4 +15,5 @@ bp = Blueprint(
         url_prefix="/api/v1",
     )
 api = Api(bp)
-api.add_resource(UserApi, "/user")
+api.add_resource(UserApi, "/user/<user_id>")
+api.add_resource(UserListApi, "/user")

@@ -35,6 +35,7 @@ followers = db.Table(
     ),
 )
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True,)
     username = db.Column(db.String(128), unique=True,)
@@ -127,6 +128,20 @@ class User(UserMixin, db.Model):
             return User.query.get(id)
         except Exception as e:
             return None
+
+    @staticmethod
+    def delete_user_by_id(user_id, ):
+        user = User.query.get(user_id)
+        db.session.delete(user)
+        db.session.commit()
+
+    @staticmethod
+    def update_user_by_id(user_id, data):
+        user = User.query.get(user_id)
+        for key, value in data.items():
+            setattr(user, key, value)
+        db.session.commit()
+        return user
 
     def __repr__(self, ):
         return '<%s.%s: %s, object at %s>' % (
