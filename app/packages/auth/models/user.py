@@ -13,6 +13,11 @@ from flask import current_app
 from flask_login import (
     UserMixin,
 )
+from itsdangerous import (
+    TimedJSONWebSignatureSerializer,
+    BadTimeSignature,
+    SignatureExpired,
+)
 from app.init import (
     db,
 )
@@ -128,6 +133,27 @@ class User(UserMixin, db.Model):
             return User.query.get(id)
         except Exception as e:
             return None
+
+    @staticmethod
+    def verify_user_token(token, ):
+        time_token = TimedJSONWebSignatureSerializer(
+                        secret_key=current_app.config["SECRET_KEY"],
+                        )
+        try:
+            data = time_token.loads(token)
+        except (BadTimeSignature, SignatureExpired):
+            return None
+        else:
+            user_id = data["id"]
+            user = User.query.get(user_id)
+            return user
+
+    def build_token(self, ):
+        token = TimedJSONWebSignatureSerializer(
+                    secret_key=current_app.config["SECRET_KEY"],
+                    expires_in=60
+                )
+        return token.dumps({"id": self.id})
 
     @staticmethod
     def delete_user_by_id(user_id, ):

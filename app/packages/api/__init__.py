@@ -8,7 +8,9 @@ from .user import (
     UserApi,
     UserListApi,
 )
-
+from .auth import (
+    TokenApi,
+)
 bp = Blueprint(
         name="api",
         import_name=__name__,
@@ -17,3 +19,4 @@ bp = Blueprint(
 api = Api(bp)
 api.add_resource(UserApi, "/user/<user_id>")
 api.add_resource(UserListApi, "/user")
+api.add_resource(TokenApi, "/token")
