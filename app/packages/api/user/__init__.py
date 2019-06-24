@@ -1,4 +1,3 @@
-# TODO:  remove password fields
 from flask import (
     request,
     jsonify,
