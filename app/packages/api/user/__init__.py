@@ -5,7 +5,10 @@ from flask import (
     abort
 )
 from flask_restful import Resource
-from .schemas import UserSchema
+from .schemas import (
+    UserSchema,
+    SafeUserSchema,
+)
 from .logics import (
     get_user_by_id,
     add_user,
@@ -18,17 +21,18 @@ from app.packages.api.auth import auth
 
 class UserApi(Resource):
     user_schema = UserSchema()
+    safe_user_schema = SafeUserSchema()
 
     @auth.login_required
     def get(self, user_id):
         user = get_user_by_id(user_id, )
-        return self.user_schema.dump(user)
+        return self.safe_user_schema.dump(user)
 
     @auth.login_required
     def put(self, user_id):
         info = self.user_schema.load(request.form).data
         user = update_user(user_id, info)
-        return self.user_schema.dump(user)
+        return self.safe_user_schema.dump(user)
 
     @auth.login_required
     def delete(self, user_id):
@@ -37,15 +41,16 @@ class UserApi(Resource):
 
 
 class UserListApi(Resource):
-    UserSchema = UserSchema()
+    user_schema = UserSchema()
+    safe_user_schema = SafeUserSchema()
 
     @auth.login_required
     def get(self, ):
         users = get_users()
-        return self.UserSchema.dump(users, many=True)
+        return self.safe_user_schema.dump(users, many=True)
 
     @auth.login_required
     def post(self, ):
-        user = self.UserSchema.load(request.form).data
+        user = self.user_schema.load(request.form).data
         add_user(**user)
-        return self.UserSchema.dump(user)
+        return self.user_schema.dump(user)
