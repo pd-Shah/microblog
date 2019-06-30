@@ -21,10 +21,10 @@ Flask-RQ2==18.3
 Flask-SQLAlchemy==2.4.0
 Flask-WTF==0.14.2
 get==2019.4.13
-ghasedak==0.0.1
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10.1
+kavenegar==1.1.2
 Mako==1.0.9
 MarkupSafe==1.1.1
 marshmallow==2.19.4
