@@ -10,6 +10,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_babel import Babel
 from flask_rq2 import RQ
+from flask_admin import Admin
 
 
 db = SQLAlchemy()
@@ -19,6 +20,7 @@ login.login_view = "auth.login"
 mail = Mail()
 babel = Babel()
 rq = RQ()
+admin = Admin()
 
 
 @babel.localeselector

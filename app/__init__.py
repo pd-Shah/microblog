@@ -14,14 +14,17 @@ from app.init import (
     mail,
     babel,
     rq,
+    admin,
 )
+from app.packages import admin as _
 from app.packages import blog
 from app.packages import auth
 from app.packages import error
 from app.packages import email
 from app.packages import api
-from app.packages.auth.models import User
-from app.packages.blog.models import Post
+from app.packages import payment
+from app.packages import sms
+
 
 def create_app():
     app = Flask(import_name=__name__, instance_relative_config=True)
@@ -34,15 +37,18 @@ def create_app():
     mail.init_app(app, )
     babel.init_app(app, )
     rq.init_app(app, )
+    admin.init_app(app, )
     try:
         makedirs(app.instance_path, exist_ok=True)
     except Exception as e:
         print(e)
-    app.register_blueprint(blog.bp)
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(error.bp)
-    app.register_blueprint(email.bp)
-    app.register_blueprint(api.bp)
-    app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq")
+    app.register_blueprint(blog.bp, )
+    app.register_blueprint(auth.bp, )
+    app.register_blueprint(error.bp, )
+    app.register_blueprint(email.bp, )
+    app.register_blueprint(api.bp, )
+    app.register_blueprint(payment.bp, )
+    app.register_blueprint(rq_dashboard.blueprint, url_prefix="/rq", )
+    app.register_blueprint(sms.bp, )
 
     return app
